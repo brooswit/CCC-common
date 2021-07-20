@@ -14,19 +14,19 @@ local function printJSONErrorMessage(errorMessage)
 end
 
 local function printAction(action, subject)
-    localPrint (action .. ' "' .. subject .. '".')
+    localPrint (action .. ' config "' .. subject .. '".')
 end
 
 function load(configName)
-    printAction('Loading config', configName)
+    printAction('Loading', configName)
 
     local configFileName = buildConfigFileName(configName)
 
     local fileContents = fileManager.load(configFileName)
 
-    local config, err = pcall(json.decode(fileContents))
-    if err then
-        printJSONErrorMessage(err)
+    local config, jsonErrorMessage = pcall(json.decode, fileContents)
+    if jsonErrorMessage then
+        printJSONErrorMessage(jsonErrorMessage)
         config = {}
     end
 
@@ -34,13 +34,13 @@ function load(configName)
 end
 
 function save(configName, config)
-    printAction('Saving config', configName)
+    printAction('Saving', configName)
 
     local configFileName = buildConfigFileName(configName)
 
-    local configText, err = pcall(json.decode(config))
-    if err then
-        printJSONErrorMessage(err)
+    local configText, jsonErrorMessage = pcall(json.decode, config)
+    if jsonErrorMessage then
+        printJSONErrorMessage(jsonErrorMessage)
         configText = "{}"
     end
 
