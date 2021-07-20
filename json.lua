@@ -382,23 +382,9 @@ parse = function(str, idx)
   decode_error(str, idx, "unexpected character '" .. chr .. "'")
 end
 
-
--- function decode(str)
---   if type(str) ~= "string" then
---     error("expected argument of type string, got " .. type(str))
---   end
---   local res, idx = parse(str, next_char(str, 1, space_chars, true))
---   idx = next_char(str, idx, space_chars, true)
---   if idx <= #str then
---     decode_error(str, idx, "trailing garbage")
---   end
---   return res
--- end
-
 function decode(str)
   if type(str) ~= "string" then
-    print("expected argument of type string, got " .. type(str))
-    return nil
+    error("expected argument of type string, got " .. type(str))
   end
   local res, idx = parse(str, next_char(str, 1, space_chars, true))
   idx = next_char(str, idx, space_chars, true)
