@@ -10,7 +10,7 @@ local function buildConfigFileName(configName)
 end
 
 local function printJSONError(error)
-    localPrint('JSON error: ' .. json.decode(error))
+    localPrint('JSON error: ' .. json.encode(error))
 end
 
 local function printAction(action, subject)
