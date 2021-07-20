@@ -9,8 +9,8 @@ local function buildConfigFileName(configName)
     return configName .. '.json'
 end
 
-local function printJSONErrorMessage(errorMessage)
-    localPrint('JSON error: ' .. errorMessage)
+local function printJSONError(error)
+    localPrint('JSON error: ' .. json.decode(error))
 end
 
 local function printAction(action, subject)
@@ -24,9 +24,9 @@ function load(configName)
 
     local fileContents = fileManager.load(configFileName)
 
-    local config, jsonErrorMessage = pcall(json.decode, fileContents)
-    if jsonErrorMessage then
-        printJSONErrorMessage(jsonErrorMessage)
+    local config, jsonError = pcall(json.decode, fileContents)
+    if jsonError then
+        printJSONError(jsonError)
         config = {}
     end
 
@@ -38,9 +38,9 @@ function save(configName, config)
 
     local configFileName = buildConfigFileName(configName)
 
-    local configText, jsonErrorMessage = pcall(json.decode, config)
-    if jsonErrorMessage then
-        printJSONErrorMessage(jsonErrorMessage)
+    local configText, jsonError = pcall(json.decode, config)
+    if jsonError then
+        printJSONError(jsonError)
         configText = "{}"
     end
 
