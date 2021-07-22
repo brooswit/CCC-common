@@ -21,28 +21,36 @@ function load(configName)
     printAction('Loading', configName)
 
     local configFileName = buildConfigFileName(configName)
+    local diskConfigPath = 'disk/' .. configFileName
+    local localConfigPath = configFileName
+    local configPaths = { diskConfigPath, localConfigPath }
 
-    local fileContents = fileManager.load(configFileName)
-
-    local config, jsonError = pcall(json.decode, fileContents)
-    if jsonError then
-        printJSONError(jsonError)
-        config = {}
+    for configPath in configPaths do
+        local configExists = fs.exists(configPath)
+        if configExists then
+            local configContents = fileManager.load(configPath)
+            local config = pcall(json.decode, configContents)
+            if config ~= nil then
+                return config
+            end
+        end
     end
 
-    return config
+    return {}
 end
 
 function save(configName, config)
     printAction('Saving', configName)
 
+    local configText, jsonError = pcall(json.encode, config)
+    if jsonError then configText = "{}" end
+
     local configFileName = buildConfigFileName(configName)
+    local diskConfigPath = 'disk/' .. configFileName
+    local localConfigPath = configFileName
+    local configPaths = { diskConfigPath, localConfigPath }
 
-    local configText, jsonError = pcall(json.decode, config)
-    if jsonError then
-        printJSONError(jsonError)
-        configText = "{}"
+    for configPath in configPaths do
+        fileManager.save(configPath, configText)
     end
-
-    fileManager.save(configFileName, configText)
 end

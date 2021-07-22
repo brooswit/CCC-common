@@ -1,5 +1,10 @@
+-- Originally from here: https://stackoverflow.com/questions/34618946/lua-base64-encode
+
 local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/' -- You will need this for encoding/decoding
+
+---------------------------------------------------
 -- encoding
+---------------------------------------------------
 
 function encode(data)
     return ((data:gsub('.', function(x) 
